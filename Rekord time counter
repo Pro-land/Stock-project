@@ -1,0 +1,32 @@
+import pandas as pd
+import numpy as np
+from scipy.stats import norm
+from matplotlib import pyplot as plt
+df = pd.read_excel("D:\Programming\otyear.xlsx")
+df['Date'] = pd.to_datetime(df['Date'])
+print(df)
+ev = []
+#várakozási idő számítása a sotcknak (milyen gyakran van új rekord)
+rekord = 0
+rekord_list_high = []
+rekord_list_date = []
+szamlalo = -1
+for i in df['High']:
+    szamlalo += 1
+    if i > rekord:
+        rekord = i
+        print(df.loc[szamlalo, :])
+        rekord_list_high.append(df.loc[szamlalo, 'High'])
+        rekord_list_date.append(df.loc[szamlalo, 'Date'])
+    else:
+        continue
+print(rekord)
+print(rekord_list_high)
+print(rekord_list_date)
+#úgy kéne, hogy látszódjon mikor van break, tehát egy pont kéne a matplotlibnél
+
+plt.plot(rekord_list_date, rekord_list_high)
+plt.grid = True
+plt.xlabel("Date")
+plt.ylabel("Record breaks")
+plt.show()
