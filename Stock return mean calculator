@@ -1,4 +1,5 @@
 #generally how long would it take for me to gain x% amount of money
+#firstly the stock data of of the company has to be downloaded from yahoo finance
 import pandas as pd
 import numpy as np
 from scipy.stats import norm
