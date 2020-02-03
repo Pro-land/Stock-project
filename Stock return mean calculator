@@ -1,0 +1,48 @@
+#generally how long would it take for me to gain x% amount of money
+import pandas as pd
+import numpy as np
+from scipy.stats import norm
+from matplotlib import pyplot as plt
+import statistics
+
+df = pd.read_excel("D:\Programming\otyear.xlsx")
+df['Date'] = pd.to_datetime(df['Date'])
+#print(df)
+Open_lista = []
+dublazo_lista = []
+index_szamlalo = []
+teszt_lista = [] # azt nézi hány nap telik el a kezedi és a 1.35 el későbbi érték között
+szamlalo = -1
+i_index = 0
+for i in df['Open']:
+    Open_lista.append(i)
+#print(Open_lista)
+
+for elem in range(len(Open_lista)):
+    szamlalo += 1
+    #print(szamlalo)
+    for i in Open_lista:
+        if Open_lista.index(i) < szamlalo:
+            continue
+        elif i > Open_lista[szamlalo]*1.25:
+            dublazo_lista.append(i) #megmutatja mekkora érték az, ami kell az i 1.35 szorozásához
+            index_szamlalo.append(Open_lista.index(i)) #megmutatja hogy az Open_list hányadik pozívióján található az adott szám 1.35 szöröse
+            teszt_lista.append(Open_lista.index(i)-szamlalo)
+            #print(i)
+            break #azért kell breakelni, hogy csak az első számot mutassa, ami 1.35 szörözte az első összeget. ha nem breakelném akkor mutatná a többit
+        elif Open_lista.index(i) == len(Open_lista)-1: # ez azért kell, hogy a duplázó listámba beírjon egy nullást, ha nincs 1.35.el nagyobb elem az egész listában és ha eléri a lista végét, akkor csak írjon be egy nullást
+            dublazo_lista.append(0)
+            eddigi_atlag = statistics.mean(teszt_lista)
+            teszt_lista.append(eddigi_atlag)
+
+print(teszt_lista)
+
+spekulalt_atlag = statistics.mean(teszt_lista)
+
+print("spekulált átlag: ", spekulalt_atlag)
+
+#CSINÁLJ EGY MÁSIK LISTÁT, AMI AZOKAT AZ ELEMEKET NEM VESZI FIGYELMEBE, AHOL A TESZT_LISTÁBAN NINCS AKUTÁLIS ADAT, CSAK AZ ADDIGIAK ÁTLAGA.
+
+plt.bar(Open_lista, teszt_lista)
+
+plt.show()
